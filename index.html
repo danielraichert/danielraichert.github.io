@@ -52,8 +52,8 @@
     const trailEmojis = ['💨', '🌫️', '🌪️', '🌬️']; // Wind/fog emojis for the trail
     let posX = (window.innerWidth - runner.offsetWidth) / 2; // Centered horizontally
     let posY = (window.innerHeight - runner.offsetHeight) / 2; // Centered vertically
-    let speedX = 2; // Slower speed
-    let speedY = 2; // Slower speed
+    let speedX = 3; // Tornado speed
+    let speedY = 3; // Tornado speed
     let moving = true; // Track if the runner is moving
 
     // Function to create a trail element
@@ -83,10 +83,10 @@
         runner.style.left = posX + 'px';
         runner.style.top = posY + 'px';
 
-        // Create and position a new trail element centered behind the runner
+        // Create and position a new trail element directly behind the tornado
         const trail = createTrail();
-        trail.style.left = (posX + runner.offsetWidth / 2 - 8) + 'px'; // Adjust to align trail with the center of the tornado
-        trail.style.top = (posY + runner.offsetHeight + 32) + 'px'; // Align trail with the bottom of the tornado with 32px space
+        trail.style.left = (posX + runner.offsetWidth / 2 - 8) + 'px'; // Center trail behind the tornado
+        trail.style.top = (posY + runner.offsetHeight) + 'px'; // Align trail directly behind the tornado
 
         // Animate the trail
         setTimeout(() => {
