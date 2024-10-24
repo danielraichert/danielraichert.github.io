@@ -16,7 +16,7 @@
       background-color: #f0f0f0;
     }
     #runner {
-      font-size: 48px; /* Adjust size of the emoji */
+      font-size: 96px; /* Tornado emoji size (2x bigger) */
       position: absolute;
       transition: transform 0.5s; /* Smooth transition for transformation */
       cursor: pointer; /* Change cursor to hand on hover */
@@ -41,7 +41,7 @@
   </style>
 </head>
 <body>
-  <div id="runner">🥭</div> <!-- Mango emoji -->
+  <div id="runner">🌪️</div> <!-- Tornado emoji -->
   <div id="quote">That's it, folks ¯\_(ツ)_/¯</div> <!-- Removed quotation marks -->
   
   <script>
@@ -52,8 +52,8 @@
     const trailEmojis = ['🍎', '🍌', '🥕', '🍇', '🥬', '🍉', '🍊', '🌽', '🍓', '🍋']; // Array of fruit and vegetable emojis
     let posX = Math.random() * window.innerWidth;
     let posY = Math.random() * window.innerHeight;
-    let speedX = 2; // Horizontal speed
-    let speedY = 2; // Vertical speed
+    let speedX = 3; // Horizontal speed (1.5x faster)
+    let speedY = 3; // Vertical speed (1.5x faster)
     let moving = true; // Track if the runner is moving
 
     // Function to create a trail element
@@ -85,8 +85,8 @@
 
         // Create and position a new trail element centered behind the runner
         const trail = createTrail();
-        trail.style.left = (posX + runner.offsetWidth / 2 - 12 - 12) + 'px'; // Adjust to align trail with the center of the mango
-        trail.style.top = (posY + 12) + 'px'; // Align trail with the bottom of the mango
+        trail.style.left = (posX + runner.offsetWidth / 2 - 12 - 12) + 'px'; // Adjust to align trail with the center of the tornado
+        trail.style.top = (posY + 12) + 'px'; // Align trail with the bottom of the tornado
 
         // Animate the trail
         setTimeout(() => {
