@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Raichert-Web-Test</title>
+  <script src="//api.beta.glia.com/salemove_integration.js"></script>
+  <style>
+    body {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+      font-family: "Comic Sans MS", "Comic Sans", cursive;
+      overflow: hidden; /* Prevent scrollbars */
+      background-color: #f0f0f0;
+    }
+    #runner {
+      font-size: 48px; /* Adjust size of the emoji */
+      position: absolute;
+      transition: transform 0.5s; /* Smooth transition for transformation */
+    }
+    #quote {
+      font-size: 24px;
+      text-align: center;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%) scale(0); /* Start scaled down */
+      opacity: 0;
+      transition: opacity 0.5s ease, transform 0.5s ease; /* Fade-in effect for the quote */
+    }
+    .trail {
+      position: absolute;
+      pointer-events: none; /* Allow clicks to pass through */
+      font-size: 48px;
+      opacity: 0.5; /* Slightly transparent for trail effect */
+      transition: transform 0.2s ease, opacity 0.2s ease;
+    }
+  </style>
+</head>
+<body>
+  <div id="runner">🏃</div>
+  <div id="quote">"Data beats emotions." — Sean Rad, Founder of Tinder</div>
+  
+  <script>
+    const runner = document.getElementById('runner');
+    const quote = document.getElementById('quote');
+    const trails = []; // Array to store trail elements
+    
+    let posX = Math.random() * window.innerWidth;
+    let posY = Math.random() * window.innerHeight;
+    let speedX = 2; // Horizontal speed
+    let speedY = 2; // Vertical speed
+    let moving = true; // Track if the runner is moving
+
+    // Function to create a trail element
+    function createTrail() {
+      const trail = document.createElement('div');
+      trail.className = 'trail';
+      trail.textContent = '🏃'; // Same runner emoji for trail
+      document.body.appendChild(trail);
+      trails.push(trail);
+      return trail;
+    }
+
+    // Function to move the runner
+    function moveRunner() {
+      if (moving) {
+        posX += speedX;
+        posY += speedY;
+
+        // Check for collision with the borders
+        if (posX <= 0 || posX + runner.offsetWidth >= window.innerWidth) {
+          speedX *= -1; // Reverse horizontal direction
+        }
+        if (posY <= 0 || posY + runner.offsetHeight >= window.innerHeight) {
+          speedY *= -1; // Reverse vertical direction
+        }
+
+        runner.style.left = posX + 'px';
+        runner.style.top = posY + 'px';
+
+        // Create and position a new trail element
+        const trail = createTrail();
+        trail.style.left = posX + 'px';
+        trail.style.top = posY + 'px';
+
+        // Animate the trail
+        setTimeout(() => {
+          trail.style.transform = 'translateY(-10px)'; // Move trail up slightly
+          trail.style.opacity = '0'; // Fade out
+          setTimeout(() => {
+            trail.remove(); // Remove trail element from DOM after fading out
+          }, 200); // Match timeout duration for removal
+        }, 10); // Short delay for immediate trail creation
+      }
+
+      requestAnimationFrame(moveRunner); // Continue moving
+    }
+
+    // Function to handle runner click
+    function handleRunnerClick() {
+      moving = false; // Stop the runner immediately
+      runner.style.transition = 'transform 0.5s'; // Transition for changing emoji
+      
+      // Start transformation animation
+      runner.style.transform = 'scale(0)'; // Scale down to vanish
+      setTimeout(() => {
+        runner.textContent = '🍎'; // Change to apple emoji
+        runner.style.transform = 'scale(1)'; // Scale back to original size
+      }, 500); // Delay to allow the transformation to finish
+
+      runner.onclick = null; // Remove click event from the apple
+      setTimeout(() => {
+        runner.onclick = handleAppleClick; // Add click event to apple after transformation
+      }, 500); // Delay to allow the transformation to finish
+    }
+
+    // Function to handle apple click
+    function handleAppleClick() {
+      // Start zoom-out animation for the apple
+      runner.style.transform = 'scale(1.5)'; // Zoom in
+      setTimeout(() => {
+        runner.style.transform = 'scale(0)'; // Zoom out
+        setTimeout(() => {
+          runner.style.display = 'none'; // Hide the apple after animation
+          quote.style.opacity = 1; // Show quote with fade-in
+          quote.style.transform = 'translate(-50%, -50%) scale(1)'; // Zoom in from scale 0
+        }, 300); // Delay to allow the zoom-out to complete
+      }, 200); // Delay to allow the zoom-in to complete
+    }
+
+    // Start moving the runner
+    moveRunner();
+
+    // Add click event to the runner
+    runner.onclick = handleRunnerClick;
+  </script>
+</body>
+</html>
