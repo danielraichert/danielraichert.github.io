@@ -41,8 +41,8 @@
   </style>
 </head>
 <body>
-  <div id="runner">🏃</div>
-  <div id="quote">"Data beats emotions." — Sean Rad, Founder of Tinder</div>
+  <div id="runner">🎱</div> <!-- Changed to 8-ball pool emoji -->
+  <div id="quote">"That's it, folks ¯\_(ツ)_/¯"</div>
   
   <script>
     const runner = document.getElementById('runner');
@@ -83,18 +83,18 @@
         runner.style.left = posX + 'px';
         runner.style.top = posY + 'px';
 
-        // Create and position a new trail element
+        // Create and position a new trail element with space
         const trail = createTrail();
-        trail.style.left = posX + 'px';
+        trail.style.left = (posX + runner.offsetWidth + 10) + 'px'; // Leave space between the runner and trail
         trail.style.top = posY + 'px';
 
         // Animate the trail
         setTimeout(() => {
           if (trails.length > 5) { // Check if more than 5 trails
-            trail.style.opacity = '0'; // Fade out
+            const oldTrail = trails.shift(); // Get the first trail from the array
+            oldTrail.style.opacity = '0'; // Fade out
             setTimeout(() => {
-              trail.remove(); // Remove trail element from DOM after fading out
-              trails.shift(); // Remove the first trail from the array
+              oldTrail.remove(); // Remove trail element from DOM after fading out
             }, 1000); // Match timeout duration for removal
           }
         }, 10); // Short delay for immediate trail creation
@@ -111,24 +111,24 @@
       // Start transformation animation
       runner.style.transform = 'scale(0)'; // Scale down to vanish
       setTimeout(() => {
-        runner.textContent = '🎾'; // Change to tennis ball emoji
+        runner.textContent = '❓'; // Change to question mark emoji
         runner.style.transform = 'scale(1)'; // Scale back to original size
       }, 500); // Delay to allow the transformation to finish
 
-      runner.onclick = null; // Remove click event from the tennis ball
+      runner.onclick = null; // Remove click event from the question mark
       setTimeout(() => {
-        runner.onclick = handleAppleClick; // Add click event to tennis ball after transformation
+        runner.onclick = handleAppleClick; // Add click event to question mark after transformation
       }, 500); // Delay to allow the transformation to finish
     }
 
-    // Function to handle tennis ball click
+    // Function to handle question mark click
     function handleAppleClick() {
-      // Start zoom-out animation for the tennis ball
+      // Start zoom-out animation for the question mark
       runner.style.transform = 'scale(1.5)'; // Zoom in
       setTimeout(() => {
         runner.style.transform = 'scale(0)'; // Zoom out
         setTimeout(() => {
-          runner.style.display = 'none'; // Hide the tennis ball after animation
+          runner.style.display = 'none'; // Hide the question mark after animation
           quote.style.opacity = 1; // Show quote with fade-in
           quote.style.transform = 'translate(-50%, -50%) scale(1)'; // Zoom in from scale 0
         }, 300); // Delay to allow the zoom-out to complete
