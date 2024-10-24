@@ -41,8 +41,8 @@
   </style>
 </head>
 <body>
-  <div id="runner">🎱</div> <!-- Changed to 8-ball pool emoji -->
-  <div id="quote">"That's it, folks ¯\_(ツ)_/¯"</div>
+  <div id="runner">🎱</div> <!-- 8-ball pool emoji -->
+  <div id="quote">That's it, folks ¯\_(ツ)_/¯</div> <!-- Removed quotation marks -->
   
   <script>
     const runner = document.getElementById('runner');
@@ -83,10 +83,10 @@
         runner.style.left = posX + 'px';
         runner.style.top = posY + 'px';
 
-        // Create and position a new trail element with space
+        // Create and position a new trail element centered behind the runner
         const trail = createTrail();
-        trail.style.left = (posX + runner.offsetWidth + 10) + 'px'; // Leave space between the runner and trail
-        trail.style.top = posY + 'px';
+        trail.style.left = (posX + runner.offsetWidth / 2 - 12) + 'px'; // Center trail behind the 8-ball
+        trail.style.top = (posY + 12) + 'px'; // Align trail with the bottom of the 8-ball
 
         // Animate the trail
         setTimeout(() => {
