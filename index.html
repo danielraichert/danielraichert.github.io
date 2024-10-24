@@ -16,7 +16,7 @@
       background-color: #f0f0f0;
     }
     #runner {
-      font-size: 48px; /* Original tornado emoji size */
+      font-size: 48px; /* Tornado emoji size */
       position: absolute;
       transition: transform 0.5s; /* Smooth transition for transformation */
       cursor: pointer; /* Change cursor to hand on hover */
@@ -50,10 +50,10 @@
     const trails = []; // Array to store trail elements
     
     const trailEmojis = ['💨', '🌫️', '🌪️', '🌬️']; // Wind/fog emojis for the trail
-    let posX = Math.random() * window.innerWidth;
-    let posY = Math.random() * window.innerHeight;
-    let speedX = 2; // Medium speed
-    let speedY = 2; // Medium speed
+    let posX = (window.innerWidth - runner.offsetWidth) / 2; // Centered horizontally
+    let posY = (window.innerHeight - runner.offsetHeight) / 2; // Centered vertically
+    let speedX = 4; // Double speed
+    let speedY = 4; // Double speed
     let moving = true; // Track if the runner is moving
 
     // Function to create a trail element
@@ -86,7 +86,7 @@
         // Create and position a new trail element centered behind the runner
         const trail = createTrail();
         trail.style.left = (posX + runner.offsetWidth / 2 - 8) + 'px'; // Adjust to align trail with the center of the tornado
-        trail.style.top = (posY + 12) + 'px'; // Align trail with the bottom of the tornado
+        trail.style.top = (posY + runner.offsetHeight + 32) + 'px'; // Align trail with the bottom of the tornado with 32px space
 
         // Animate the trail
         setTimeout(() => {
@@ -108,30 +108,30 @@
       moving = false; // Stop the runner immediately
       runner.style.transition = 'transform 0.5s'; // Transition for changing emoji
       
-      // Start transformation animation
-      runner.style.transform = 'scale(0)'; // Scale down to vanish
+      // Start transformation animation with spinning and zooming
+      runner.style.transform = 'rotate(720deg) scale(0)'; // Spin and scale down
       setTimeout(() => {
-        runner.textContent = '❓'; // Change to question mark emoji
-        runner.style.transform = 'scale(1)'; // Scale back to original size
-        // Remove all trail elements and the quote when the question mark appears
+        runner.textContent = '🌈'; // Change to rainbow emoji
+        runner.style.transform = 'rotate(0deg) scale(1)'; // Spin back to original size
+        // Remove all trail elements and the quote when the rainbow appears
         trails.forEach(trail => trail.remove());
         trails.length = 0; // Clear the trails array
       }, 500); // Delay to allow the transformation to finish
 
-      runner.onclick = null; // Remove click event from the question mark
+      runner.onclick = null; // Remove click event from the rainbow
       setTimeout(() => {
-        runner.onclick = handleAppleClick; // Add click event to question mark after transformation
+        runner.onclick = handleAppleClick; // Add click event to rainbow after transformation
       }, 500); // Delay to allow the transformation to finish
     }
 
-    // Function to handle question mark click
+    // Function to handle rainbow click
     function handleAppleClick() {
-      // Start zoom-out animation for the question mark
+      // Start zoom-out animation for the rainbow
       runner.style.transform = 'scale(1.5)'; // Zoom in
       setTimeout(() => {
         runner.style.transform = 'scale(0)'; // Zoom out
         setTimeout(() => {
-          runner.style.display = 'none'; // Hide the question mark after animation
+          runner.style.display = 'none'; // Hide the rainbow after animation
           quote.style.opacity = 1; // Show quote with fade-in
           quote.style.transform = 'translate(-50%, -50%) scale(1)'; // Zoom in from scale 0
         }, 300); // Delay to allow the zoom-out to complete
