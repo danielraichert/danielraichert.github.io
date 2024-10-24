@@ -16,7 +16,7 @@
       background-color: #f0f0f0;
     }
     #runner {
-      font-size: 96px; /* Tornado emoji size (2x bigger) */
+      font-size: 48px; /* Original tornado emoji size */
       position: absolute;
       transition: transform 0.5s; /* Smooth transition for transformation */
       cursor: pointer; /* Change cursor to hand on hover */
@@ -34,9 +34,9 @@
     .trail {
       position: absolute;
       pointer-events: none; /* Allow clicks to pass through */
-      font-size: 24px; /* Size of the trail emojis (2x smaller than runner) */
+      font-size: 16px; /* Size of the trail emojis (2x smaller than runner) */
       opacity: 1; /* Fully visible */
-      transition: opacity 2s ease; /* Fade-out effect, duration increased for longer trail */
+      transition: opacity 2s ease; /* Fade-out effect */
     }
   </style>
 </head>
@@ -49,18 +49,18 @@
     const quote = document.getElementById('quote');
     const trails = []; // Array to store trail elements
     
-    const trailEmojis = ['🍎', '🍌', '🥕', '🍇', '🥬', '🍉', '🍊', '🌽', '🍓', '🍋']; // Array of fruit and vegetable emojis
+    const trailEmojis = ['💨', '🌫️', '🌪️', '🌬️']; // Wind/fog emojis for the trail
     let posX = Math.random() * window.innerWidth;
     let posY = Math.random() * window.innerHeight;
-    let speedX = 3; // Horizontal speed (1.5x faster)
-    let speedY = 3; // Vertical speed (1.5x faster)
+    let speedX = 2; // Medium speed
+    let speedY = 2; // Medium speed
     let moving = true; // Track if the runner is moving
 
     // Function to create a trail element
     function createTrail() {
       const trail = document.createElement('div');
       trail.className = 'trail';
-      trail.textContent = trailEmojis[Math.floor(Math.random() * trailEmojis.length)]; // Random fruit/vegetable emoji
+      trail.textContent = trailEmojis[Math.floor(Math.random() * trailEmojis.length)]; // Random wind/fog emoji
       document.body.appendChild(trail);
       trails.push(trail);
       return trail;
@@ -85,12 +85,12 @@
 
         // Create and position a new trail element centered behind the runner
         const trail = createTrail();
-        trail.style.left = (posX + runner.offsetWidth / 2 - 12 - 12) + 'px'; // Adjust to align trail with the center of the tornado
+        trail.style.left = (posX + runner.offsetWidth / 2 - 8) + 'px'; // Adjust to align trail with the center of the tornado
         trail.style.top = (posY + 12) + 'px'; // Align trail with the bottom of the tornado
 
         // Animate the trail
         setTimeout(() => {
-          if (trails.length > 30) { // Change to 30 for three times longer trail
+          if (trails.length > 30) { // Keep to 30 for the longer trail
             const oldTrail = trails.shift(); // Get the first trail from the array
             oldTrail.style.opacity = '0'; // Fade out
             setTimeout(() => {
