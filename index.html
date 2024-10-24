@@ -36,7 +36,7 @@
       pointer-events: none; /* Allow clicks to pass through */
       font-size: 24px; /* Size of the trail emojis (2x smaller than runner) */
       opacity: 1; /* Fully visible */
-      transition: opacity 1s ease; /* Fade-out effect */
+      transition: opacity 2s ease; /* Fade-out effect, duration increased for longer trail */
     }
   </style>
 </head>
@@ -85,17 +85,17 @@
 
         // Create and position a new trail element centered behind the runner
         const trail = createTrail();
-        trail.style.left = (posX + runner.offsetWidth / 2 - 12 - 24) + 'px'; // Adjust to leave space equal to half the mango
+        trail.style.left = (posX + runner.offsetWidth / 2 - 12 - 12) + 'px'; // Adjust to align trail with the center of the mango
         trail.style.top = (posY + 12) + 'px'; // Align trail with the bottom of the mango
 
         // Animate the trail
         setTimeout(() => {
-          if (trails.length > 15) { // Change to 15 for longer trail
+          if (trails.length > 30) { // Change to 30 for three times longer trail
             const oldTrail = trails.shift(); // Get the first trail from the array
             oldTrail.style.opacity = '0'; // Fade out
             setTimeout(() => {
               oldTrail.remove(); // Remove trail element from DOM after fading out
-            }, 1000); // Match timeout duration for removal
+            }, 2000); // Match timeout duration for removal
           }
         }, 10); // Short delay for immediate trail creation
       }
