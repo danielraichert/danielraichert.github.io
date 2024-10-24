@@ -19,6 +19,7 @@
       font-size: 48px; /* Adjust size of the emoji */
       position: absolute;
       transition: transform 0.5s; /* Smooth transition for transformation */
+      cursor: pointer; /* Change cursor to hand on hover */
     }
     #quote {
       font-size: 24px;
@@ -34,8 +35,9 @@
       position: absolute;
       pointer-events: none; /* Allow clicks to pass through */
       font-size: 48px;
-      opacity: 0.5; /* Slightly transparent for trail effect */
+      opacity: 0.3; /* More transparent for trail effect */
       transition: transform 0.2s ease, opacity 0.2s ease;
+      transform: translateY(10px); /* Start slightly lower to give it a longer appearance */
     }
   </style>
 </head>
