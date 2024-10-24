@@ -42,7 +42,7 @@
 </head>
 <body>
   <div id="runner">🌪️</div> <!-- Tornado emoji -->
-  <div id="quote">That's it, folks ¯\_(ツ)_/¯</div> <!-- Removed quotation marks -->
+  <div id="quote">That's it, folks ¯\_(ツ)_/¯</div> <!-- Quote text -->
   
   <script>
     const runner = document.getElementById('runner');
@@ -85,7 +85,7 @@
 
         // Create and position a new trail element directly behind the tornado
         const trail = createTrail();
-        trail.style.left = (posX + runner.offsetWidth / 2 - 8) + 'px'; // Align trail directly behind the tornado
+        trail.style.left = (posX + runner.offsetWidth / 2 - 8) + 'px'; // Align trail centrally behind the tornado
         trail.style.top = (posY + runner.offsetHeight) + 'px'; // Align trail directly behind the tornado
 
         // Animate the trail
