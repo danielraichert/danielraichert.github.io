@@ -34,10 +34,9 @@
     .trail {
       position: absolute;
       pointer-events: none; /* Allow clicks to pass through */
-      font-size: 48px;
-      opacity: 0.3; /* More transparent for trail effect */
-      transition: transform 0.2s ease, opacity 0.2s ease;
-      transform: translateY(10px); /* Start slightly lower to give it a longer appearance */
+      font-size: 24px; /* Size of the trail emojis (2x smaller than runner) */
+      opacity: 1; /* Fully visible */
+      transition: opacity 1s ease; /* Fade-out effect */
     }
   </style>
 </head>
@@ -50,6 +49,7 @@
     const quote = document.getElementById('quote');
     const trails = []; // Array to store trail elements
     
+    const trailEmojis = ['🍎', '🍌', '🥕', '🍇', '🥬', '🍉', '🍊', '🌽', '🍓', '🍋']; // Array of fruit and vegetable emojis
     let posX = Math.random() * window.innerWidth;
     let posY = Math.random() * window.innerHeight;
     let speedX = 2; // Horizontal speed
@@ -60,7 +60,7 @@
     function createTrail() {
       const trail = document.createElement('div');
       trail.className = 'trail';
-      trail.textContent = '🏃'; // Same runner emoji for trail
+      trail.textContent = trailEmojis[Math.floor(Math.random() * trailEmojis.length)]; // Random fruit/vegetable emoji
       document.body.appendChild(trail);
       trails.push(trail);
       return trail;
@@ -90,11 +90,13 @@
 
         // Animate the trail
         setTimeout(() => {
-          trail.style.transform = 'translateY(-10px)'; // Move trail up slightly
-          trail.style.opacity = '0'; // Fade out
-          setTimeout(() => {
-            trail.remove(); // Remove trail element from DOM after fading out
-          }, 200); // Match timeout duration for removal
+          if (trails.length > 5) { // Check if more than 5 trails
+            trail.style.opacity = '0'; // Fade out
+            setTimeout(() => {
+              trail.remove(); // Remove trail element from DOM after fading out
+              trails.shift(); // Remove the first trail from the array
+            }, 1000); // Match timeout duration for removal
+          }
         }, 10); // Short delay for immediate trail creation
       }
 
@@ -109,24 +111,24 @@
       // Start transformation animation
       runner.style.transform = 'scale(0)'; // Scale down to vanish
       setTimeout(() => {
-        runner.textContent = '🍎'; // Change to apple emoji
+        runner.textContent = '🎾'; // Change to tennis ball emoji
         runner.style.transform = 'scale(1)'; // Scale back to original size
       }, 500); // Delay to allow the transformation to finish
 
-      runner.onclick = null; // Remove click event from the apple
+      runner.onclick = null; // Remove click event from the tennis ball
       setTimeout(() => {
-        runner.onclick = handleAppleClick; // Add click event to apple after transformation
+        runner.onclick = handleAppleClick; // Add click event to tennis ball after transformation
       }, 500); // Delay to allow the transformation to finish
     }
 
-    // Function to handle apple click
+    // Function to handle tennis ball click
     function handleAppleClick() {
-      // Start zoom-out animation for the apple
+      // Start zoom-out animation for the tennis ball
       runner.style.transform = 'scale(1.5)'; // Zoom in
       setTimeout(() => {
         runner.style.transform = 'scale(0)'; // Zoom out
         setTimeout(() => {
-          runner.style.display = 'none'; // Hide the apple after animation
+          runner.style.display = 'none'; // Hide the tennis ball after animation
           quote.style.opacity = 1; // Show quote with fade-in
           quote.style.transform = 'translate(-50%, -50%) scale(1)'; // Zoom in from scale 0
         }, 300); // Delay to allow the zoom-out to complete
