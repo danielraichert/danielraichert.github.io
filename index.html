@@ -1,148 +1,124 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8">
-  <title>Raichert-Web-Test</title>
-  <script src="//api.beta.glia.com/salemove_integration.js"></script>
-  <style>
-    body {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-      margin: 0;
-      font-family: "Comic Sans MS", "Comic Sans", cursive;
-      overflow: hidden; /* Prevent scrollbars */
-      background-color: #f0f0f0;
-    }
-    #runner {
-      font-size: 48px; /* Tornado emoji size */
-      position: absolute;
-      transition: transform 0.5s; /* Smooth transition for transformation */
-      cursor: pointer; /* Change cursor to hand on hover */
-    }
-    #quote {
-      font-size: 24px;
-      text-align: center;
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%) scale(0); /* Start scaled down */
-      opacity: 0;
-      transition: opacity 0.5s ease, transform 0.5s ease; /* Fade-in effect for the quote */
-    }
-    .trail {
-      position: absolute;
-      pointer-events: none; /* Allow clicks to pass through */
-      font-size: 16px; /* Size of the trail emojis (2x smaller than runner) */
-      opacity: 1; /* Fully visible */
-      transition: opacity 2s ease; /* Fade-out effect */
-    }
-  </style>
+    <meta charset="utf-8">
+    <title>Raichert-Web</title>
+    <style>
+        body {
+            position: relative;
+            overflow: hidden; /* Prevent scrolling */
+            height: 100vh;
+            margin: 0;
+            background-color: #e0f7fa; /* Light background */
+            font-family: 'Comic Sans MS', cursive, sans-serif;
+        }
+
+        #tornado {
+            position: absolute;
+            left: 50%; /* Center the tornado */
+            top: 50%; /* Start in the middle of the screen */
+            transform: translate(-50%, -50%); /* Center it perfectly */
+            font-size: 64px; /* Size of the tornado */
+            transition: transform 0.5s; /* Smooth movement */
+        }
+
+        .trail {
+            position: absolute;
+            pointer-events: none; /* Avoid interactions */
+            font-size: 32px; /* Size of trail emojis */
+            opacity: 1; /* Initial opacity */
+            transition: opacity 0.5s; /* Smooth fade */
+        }
+
+        .quote {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 24px;
+            display: none; /* Hidden initially */
+            z-index: 10; /* Above tornado and trail */
+        }
+    </style>
 </head>
 <body>
-  <div id="runner">🌪️</div> <!-- Tornado emoji -->
-  <div id="quote">That's it, folks ¯\_(ツ)_/¯</div> <!-- Removed quotation marks -->
-  
-  <script>
-    const runner = document.getElementById('runner');
-    const quote = document.getElementById('quote');
-    const trails = []; // Array to store trail elements
-    
-    const trailEmojis = ['💨', '🌫️', '🌪️', '🌬️']; // Wind/fog emojis for the trail
-    let posX = (window.innerWidth - runner.offsetWidth) / 2; // Centered horizontally
-    let posY = (window.innerHeight - runner.offsetHeight) / 2; // Centered vertically
-    let speedX = 3; // Tornado speed
-    let speedY = 3; // Tornado speed
-    let moving = true; // Track if the runner is moving
+    <div id="tornado">🌪️</div>
+    <div class="quote" id="quote">That's it, folks ¯\_(ツ)_/¯</div>
 
-    // Function to create a trail element
-    function createTrail() {
-      const trail = document.createElement('div');
-      trail.className = 'trail';
-      trail.textContent = trailEmojis[Math.floor(Math.random() * trailEmojis.length)]; // Random wind/fog emoji
-      document.body.appendChild(trail);
-      trails.push(trail);
-      return trail;
-    }
+    <script>
+        const tornado = document.getElementById('tornado');
+        const quote = document.getElementById('quote');
+        const trailLength = 10; // Number of trail emojis
+        const trail = [];
+        let isMoving = true;
 
-    // Function to move the runner
-    function moveRunner() {
-      if (moving) {
-        posX += speedX;
-        posY += speedY;
-
-        // Check for collision with the borders
-        if (posX <= 0 || posX + runner.offsetWidth >= window.innerWidth) {
-          speedX *= -1; // Reverse horizontal direction
-        }
-        if (posY <= 0 || posY + runner.offsetHeight >= window.innerHeight) {
-          speedY *= -1; // Reverse vertical direction
+        // Function to create trail emojis
+        function createTrail() {
+            for (let i = 0; i < trailLength; i++) {
+                const trailEmoji = document.createElement('div');
+                trailEmoji.className = 'trail';
+                trailEmoji.textContent = '💨'; // Wind/fog emoji
+                document.body.appendChild(trailEmoji);
+                trail.push(trailEmoji);
+            }
         }
 
-        runner.style.left = posX + 'px';
-        runner.style.top = posY + 'px';
+        // Function to update trail positions
+        function updateTrail() {
+            const { left, top } = tornado.getBoundingClientRect();
+            trail.forEach((emoji, index) => {
+                emoji.style.left = `${left + 16}px`; // Align trail to the center of the tornado
+                emoji.style.top = `${top + 16}px`; // Align trail to the center of the tornado
+                emoji.style.opacity = 1 - (index / trailLength); // Fade effect
+            });
+        }
 
-        // Create and position a new trail element directly behind the tornado
-        const trail = createTrail();
-        trail.style.left = (posX + runner.offsetWidth / 2 - 8) + 'px'; // Center trail behind the tornado
-        trail.style.top = (posY + runner.offsetHeight) + 'px'; // Align trail directly behind the tornado
+        // Function to move the tornado
+        function moveTornado() {
+            let angle = Math.random() * 2 * Math.PI; // Random angle for movement
+            const speed = 3; // Speed of movement
 
-        // Animate the trail
-        setTimeout(() => {
-          if (trails.length > 30) { // Keep to 30 for the longer trail
-            const oldTrail = trails.shift(); // Get the first trail from the array
-            oldTrail.style.opacity = '0'; // Fade out
+            function animate() {
+                if (!isMoving) return;
+
+                const rect = tornado.getBoundingClientRect();
+                let newX = rect.left + Math.cos(angle) * speed;
+                let newY = rect.top + Math.sin(angle) * speed;
+
+                // Check for border collision
+                if (newX < 0 || newX > window.innerWidth - 64) angle = Math.PI - angle; // Bounce back
+                if (newY < 0 || newY > window.innerHeight - 64) angle = -angle; // Bounce back
+
+                tornado.style.left = `${newX}px`;
+                tornado.style.top = `${newY}px`;
+                updateTrail();
+
+                requestAnimationFrame(animate);
+            }
+            animate();
+        }
+
+        // Click event to stop tornado and show the quote
+        tornado.addEventListener('click', () => {
+            isMoving = false;
+            tornado.style.transition = 'transform 0.5s';
+            tornado.style.transform = 'scale(1.5)'; // Enlarge tornado during transition
             setTimeout(() => {
-              oldTrail.remove(); // Remove trail element from DOM after fading out
-            }, 2000); // Match timeout duration for removal
-          }
-        }, 10); // Short delay for immediate trail creation
-      }
+                tornado.textContent = '🍏'; // Transform to apple
+                tornado.style.transition = 'transform 0.5s';
+                tornado.style.transform = 'scale(1)'; // Reset size
+            }, 500); // Wait for the transition
+            setTimeout(() => {
+                quote.style.display = 'block'; // Show quote
+                quote.style.opacity = 0; // Start invisible
+                quote.style.transition = 'opacity 0.5s';
+                quote.style.opacity = 1; // Fade in
+            }, 1000); // Wait for the apple to appear
+        });
 
-      requestAnimationFrame(moveRunner); // Continue moving
-    }
-
-    // Function to handle runner click
-    function handleRunnerClick() {
-      moving = false; // Stop the runner immediately
-      runner.style.transition = 'transform 0.5s'; // Transition for changing emoji
-      
-      // Start transformation animation with spinning and zooming
-      runner.style.transform = 'rotate(720deg) scale(0)'; // Spin and scale down
-      setTimeout(() => {
-        runner.textContent = '🌈'; // Change to rainbow emoji
-        runner.style.transform = 'rotate(0deg) scale(1)'; // Spin back to original size
-        // Remove all trail elements and the quote when the rainbow appears
-        trails.forEach(trail => trail.remove());
-        trails.length = 0; // Clear the trails array
-      }, 500); // Delay to allow the transformation to finish
-
-      runner.onclick = null; // Remove click event from the rainbow
-      setTimeout(() => {
-        runner.onclick = handleAppleClick; // Add click event to rainbow after transformation
-      }, 500); // Delay to allow the transformation to finish
-    }
-
-    // Function to handle rainbow click
-    function handleAppleClick() {
-      // Start zoom-out animation for the rainbow
-      runner.style.transform = 'scale(1.5)'; // Zoom in
-      setTimeout(() => {
-        runner.style.transform = 'scale(0)'; // Zoom out
-        setTimeout(() => {
-          runner.style.display = 'none'; // Hide the rainbow after animation
-          quote.style.opacity = 1; // Show quote with fade-in
-          quote.style.transform = 'translate(-50%, -50%) scale(1)'; // Zoom in from scale 0
-        }, 300); // Delay to allow the zoom-out to complete
-      }, 200); // Delay to allow the zoom-in to complete
-    }
-
-    // Start moving the runner
-    moveRunner();
-
-    // Add click event to the runner
-    runner.onclick = handleRunnerClick;
-  </script>
+        // Create the trail and start moving the tornado
+        createTrail();
+        moveTornado();
+    </script>
 </body>
 </html>
