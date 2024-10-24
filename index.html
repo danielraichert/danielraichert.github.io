@@ -41,7 +41,7 @@
   </style>
 </head>
 <body>
-  <div id="runner">🎱</div> <!-- 8-ball pool emoji -->
+  <div id="runner">🥭</div> <!-- Mango emoji -->
   <div id="quote">That's it, folks ¯\_(ツ)_/¯</div> <!-- Removed quotation marks -->
   
   <script>
@@ -85,8 +85,8 @@
 
         // Create and position a new trail element centered behind the runner
         const trail = createTrail();
-        trail.style.left = (posX + runner.offsetWidth / 2 - 12 - 24) + 'px'; // Adjust to leave space equal to half the 8-ball
-        trail.style.top = (posY + 12) + 'px'; // Align trail with the bottom of the 8-ball
+        trail.style.left = (posX + runner.offsetWidth / 2 - 12 - 24) + 'px'; // Adjust to leave space equal to half the mango
+        trail.style.top = (posY + 12) + 'px'; // Align trail with the bottom of the mango
 
         // Animate the trail
         setTimeout(() => {
@@ -113,6 +113,9 @@
       setTimeout(() => {
         runner.textContent = '❓'; // Change to question mark emoji
         runner.style.transform = 'scale(1)'; // Scale back to original size
+        // Remove all trail elements and the quote when the question mark appears
+        trails.forEach(trail => trail.remove());
+        trails.length = 0; // Clear the trails array
       }, 500); // Delay to allow the transformation to finish
 
       runner.onclick = null; // Remove click event from the question mark
