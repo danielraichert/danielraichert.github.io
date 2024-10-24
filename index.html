@@ -85,12 +85,12 @@
 
         // Create and position a new trail element centered behind the runner
         const trail = createTrail();
-        trail.style.left = (posX + runner.offsetWidth / 2 - 12) + 'px'; // Center trail behind the 8-ball
+        trail.style.left = (posX + runner.offsetWidth / 2 - 12 - 24) + 'px'; // Adjust to leave space equal to half the 8-ball
         trail.style.top = (posY + 12) + 'px'; // Align trail with the bottom of the 8-ball
 
         // Animate the trail
         setTimeout(() => {
-          if (trails.length > 5) { // Check if more than 5 trails
+          if (trails.length > 15) { // Change to 15 for longer trail
             const oldTrail = trails.shift(); // Get the first trail from the array
             oldTrail.style.opacity = '0'; // Fade out
             setTimeout(() => {
