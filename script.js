@@ -14,25 +14,29 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
-    // Glia integration
+    // Wait for the Glia SDK to be ready
     if (typeof salemove !== 'undefined') {
-        var engagementRequest = salemove.requestEngagement('text');
-
-        engagementRequest.engagementPromise.then(function(engagement) {
-            // Add click event listener to the Sign Up button
-            signupButton.addEventListener('click', function() {
-                engagement.recordEvent({message: 'Sign Up button clicked'})
-                    .then(() => {
-                        console.log('Event recorded successfully');
-                    })
-                    .catch((error) => {
-                        console.error('Failed to record event:', error);
-                    });
+        salemove.on('ready', function() {
+            // Request an engagement
+            var engagementRequest = salemove.requestEngagement('text');
+            
+            engagementRequest.engagementPromise.then(function(engagement) {
+                // Add click event listener to the Signup button
+                signupButton.addEventListener('click', function() {
+                    // Record the event when the Signup button is clicked
+                    engagement.recordEvent({message: 'Signup button clicked'})
+                        .then(() => {
+                            console.log('Event recorded successfully');
+                        })
+                        .catch((error) => {
+                            console.error('Failed to record event:', error);
+                        });
+                });
+            }).catch(function(error) {
+                console.error('Failed to request engagement:', error);
             });
-        }).catch(function(error) {
-            console.error('Failed to request engagement:', error);
         });
     } else {
-        console.warn('Glia SDK not loaded');
+        console.error('Glia SDK not found');
     }
 });
