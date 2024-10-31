@@ -1,4 +1,9 @@
 function setGliaAttribute(geoData) {
+    if (typeof sm === 'undefined' || !sm.getApi) {
+        console.error('Glia SDK not initialized');
+        return;
+    }
+
     sm.getApi({version: 'v1'}).then(function(glia) {
         glia.updateInformation({
             customAttributesUpdateMethod: 'merge',
@@ -10,6 +15,8 @@ function setGliaAttribute(geoData) {
         }).catch(error => {
             console.error('Error setting Glia custom attribute:', error);
         });
+    }).catch(error => {
+        console.error('Error getting Glia API:', error);
     });
 }
 

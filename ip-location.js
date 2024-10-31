@@ -24,6 +24,9 @@ function displayGeolocation() {
                 <p><strong>Region:</strong> ${geoData.region}</p>
                 <p><strong>City:</strong> ${geoData.city}</p>
             `;
+
+            // Dispatch the custom event
+            window.dispatchEvent(new CustomEvent('geolocationFetched', { detail: geoData }));
         })
         .catch(error => {
             console.error('Error:', error);
