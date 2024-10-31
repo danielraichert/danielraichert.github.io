@@ -9,6 +9,22 @@
   <link href="https://fonts.googleapis.com/css2?family=Bona+Nova:sc&display=swap" rel="stylesheet">
 </head>
 <body>
+  <script async src="//api.beta.glia.com/salemove_integration.js"></script>
+
+  <script>
+    sm.getApi({version: 'v1'}).then(function(glia) {
+    
+    function addSubmitListener(engagement) {
+      var submit = document.querySelector('.btn.btn-signup');    
+      submit.addEventListener('click', function() {
+        engagement.recordEvent({message: 'Visitor wants to sign up'});
+      });
+    }
+    
+    glia.addEventListener(glia.EVENTS.ENGAGEMENT_START, addSubmitListener);
+    });
+    
+    </script>
   <header>
     <div class="container">
       <div class="logo-container">
@@ -26,13 +42,12 @@
       <div class="header-buttons">
         <div class="auth-buttons">
           <button class="btn btn-signin">Sign In</button>
-          <button class="btn btn-signup">Sign Up</button>
+          <button class="btn btn-signup">Sign Up</button> 
         </div>
         <button class="menu-button">☰</button>
       </div>
     </div>
   </header>
-  <script src="//api.beta.glia.com/salemove_integration.js"></script>
 
   <main>
     <section id="home" class="hero">
