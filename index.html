@@ -12,19 +12,30 @@
   <script async src="//api.beta.glia.com/salemove_integration.js"></script>
 
   <script>
-    sm.getApi({version: 'v1'}).then(function(glia) {
+   sm.getApi({version: 'v1'}).then(function(glia) {
     
     function addSubmitListener(engagement) {
-      var submit = document.querySelector('.btn.btn-signup');    
+      var submit = document.querySelector('.btn.btn-signup');
+      
       submit.addEventListener('click', function() {
-        engagement.recordEvent({message: 'Visitor wants to sign up'});
+        if (engagement && typeof engagement.recordEvent === 'function') {
+          engagement.recordEvent({message: 'Visitor wants to sign up'})
+            .then(() => {
+              console.log('Event recorded successfully');
+            })
+            .catch((error) => {
+              console.error('Error recording event:', error);
+            });
+        } else {
+          console.error('Invalid engagement object or recordEvent method not found');
+        }
       });
     }
-    
+      
     glia.addEventListener(glia.EVENTS.ENGAGEMENT_START, addSubmitListener);
-    });
-    
-    </script>
+  });
+  </script>
+
   <header>
     <div class="container">
       <div class="logo-container">
