@@ -11,31 +11,6 @@
 <body>
   <script async src="//api.beta.glia.com/salemove_integration.js"></script>
 
-  <script>
-   sm.getApi({version: 'v1'}).then(function(glia) {
-    
-    function addSubmitListener(engagement) {
-      var submit = document.querySelector('.btn.btn-signup');
-      
-      submit.addEventListener('click', function() {
-        if (engagement && typeof engagement.recordEvent === 'function') {
-          engagement.recordEvent({message: 'Hey'})
-            .then(() => {
-              console.log('Event recorded successfully');
-            })
-            .catch((error) => {
-              console.error('Error recording event:', error);
-            });
-        } else {
-          console.error('Invalid engagement object or recordEvent method not found');
-        }
-      });
-    }
-      
-    glia.addEventListener(glia.EVENTS.ENGAGEMENT_START, addSubmitListener);
-  });
-  </script>
-
   <header>
     <div class="container">
       <div class="logo-container">
@@ -69,14 +44,14 @@
     
     <figure class="hero-figure">
       <img src="images/happy_family_stock.jpg" alt="Happy clients" class="hero-image">
-      <figcaption>Happy clients of Raichert Capital</figcaption>
+      <figcaption>Happy customers of Raichert Capital</figcaption>
     </figure>
     
     <section id="user-location" class="user-location">
-      <h2>Your Location</h2>
+      <h2>Your Approximate Location</h2>
       <div id="geoInfo">Loading your location...</div>
     </section>
-    
+
     <section id="about">
       <h2>About Us</h2>
       <p>Raichert Capital: Your vision, our expertise.</p>
@@ -101,6 +76,8 @@
   <footer>
     <p>&copy; 2024 Raichert Capital</p>
   </footer>
-  <script src="script.js"></script>
+  <script src="dropdown-menu.js"></script>
+  <script src="ip-location.js"></script>
+  <script src="signup-click-tracker.js"></script>
 </body>
 </html>
