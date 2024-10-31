@@ -19,7 +19,7 @@
       
       submit.addEventListener('click', function() {
         if (engagement && typeof engagement.recordEvent === 'function') {
-          engagement.recordEvent({message: 'Visitor wants to sign up'})
+          engagement.recordEvent({message: 'Hey'})
             .then(() => {
               console.log('Event recorded successfully');
             })
