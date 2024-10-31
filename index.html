@@ -9,6 +9,16 @@
   <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Text&display=swap" rel="stylesheet">
 </head>
 <body>
+  
+  <script>
+		//Read idtoken from query parameter with the same name.
+		const params = new Proxy(new URLSearchParams(window.location.search), {
+			get: (searchParams, prop) => searchParams.get(prop),
+		});
+		const idToken = params.idtoken;
+		window.getGliaContext = () => ({ idToken });
+	</script>
+
   <script async src="//api.beta.glia.com/salemove_integration.js"></script>
 
   <header>
